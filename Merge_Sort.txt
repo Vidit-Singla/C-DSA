@@ -1,0 +1,69 @@
+#include <iostream>
+using namespace std;
+#include<vector>
+#include<algorithm>
+#include<numeric>
+#include <cmath>
+#include<unordered_map>
+#include<map>
+
+void merge(int arr[], int s, int e, int mid){
+    int left = mid-s+1;
+    int right = e-mid;
+
+    int *larr = new int[left];
+    int *rarr = new int[right];
+
+    int index = s;
+
+    for(int i=0; i<left; i++){
+        larr[i] = arr[index++];
+    }
+    for(int i=0; i<right; i++){
+        rarr[i] = arr[index++];
+    }
+     
+    int lindex = 0;
+    int rindex = 0;
+    int mainarrayindex = s;
+    while(lindex<left && rindex<right){
+        if(larr[lindex] < rarr[rindex]){
+            arr[mainarrayindex++] = larr[lindex++];
+        }
+        else if(rarr[rindex] < larr[lindex]){
+            arr[mainarrayindex++] = rarr[rindex++];
+        }
+    }
+    while(lindex<left){
+        arr[mainarrayindex++] = larr[lindex++];
+    }
+    while(rindex<right){
+        arr[mainarrayindex++] = rarr[rindex++];
+    }
+
+    delete[] larr;
+    delete[] rarr;
+    
+}
+
+void mergesort(int arr[], int s, int e){
+    if(s>=e){
+        return;
+    }
+    int mid = (s+e)/2;
+    mergesort(arr,s,mid);
+    mergesort(arr,mid+1,e);
+    merge(arr,s,e,mid);
+}
+
+int main() {
+    int arr[] = {10,80,110,90,50,30,40,20};
+    int size = 8;
+    int s = 0; 
+    int e = size-1;
+    mergesort(arr,s,e);
+    for(int i=0; i< size; i++){
+        cout << arr[i] << " ";
+    }
+    
+}
